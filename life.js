@@ -2,16 +2,14 @@
  * ABOUT
  * This is a simple tinker in JavaScrip inheritance based around a game of life type exercise.
  * 
- * Note: using ES6    
- * 
  * This is the main program file
  * 
  * 
  * //ToDo
  *
- * Introduce wolfs that eat rabits!
+ * Introduce wolfs that eat rabbits!
  *  
- *  Maybe  check that Rabits need food in order to multiply 
+ *  Maybe  check that Rabbits need food in order to multiply 
  * 
  *  
 */
@@ -19,17 +17,17 @@
 //var LifeObj = require("./lib/LifeObj.js");
 var SunObj = require("./lib/Sun.js");
 var GrassObj = require("./lib/Grass.js");
-var RabitObj = require("./lib/Rabit.js");
+var RabbitObj = require("./lib/Rabbit.js");
 
 var Sun = new SunObj();
 var grassGrid = [];
-var Rabits = [];
+var Rabbits = [];
 var gameTurn = 0;
 
 var BoardWidth = 10;
 var BoardHeight = 10;
-var NumRabits = 30;
-var MaxRabitPop = 50;
+var NumRabbits = 30;
+var MaxRabbitPop = 50;
 
 
 
@@ -48,25 +46,25 @@ function getOccupants(x,y){
 
     var o = [];
 
-    //Rabits
-    for(var i = 0; i < Rabits.length; i++){
-        if (Rabits[i].x == x && Rabits[i].y == y)
-        o.push(Rabits[i]);
+    //Rabbits
+    for(var i = 0; i < Rabbits.length; i++){
+        if (Rabbits[i].x == x && Rabbits[i].y == y)
+        o.push(Rabbits[i]);
     }
 
     return o;
 }
 
-function CheckForRabitLove(x,y){
+function CheckForRabbitLove(x,y){
 
     var m = false;
     var f = false;
 
-    //Rabits
-    for(var i = 0; i < Rabits.length; i++){//check for M and F
-        if (Rabits[i].x == x && Rabits[i].y == y && Rabits[i].gender == 1)
+    //Rabbits
+    for(var i = 0; i < Rabbits.length; i++){//check for M and F
+        if (Rabbits[i].x == x && Rabbits[i].y == y && Rabbits[i].gender == 1)
             m = true;
-        if (Rabits[i].x == x && Rabits[i].y == y && Rabits[i].gender == 2)
+        if (Rabbits[i].x == x && Rabbits[i].y == y && Rabbits[i].gender == 2)
             f = true;
 
         //effeceicy gain    
@@ -102,7 +100,7 @@ function draw(){
 
             if (ocs.length > 0){//do we need to draw a creature
                 for(var i = 0; i < ocs.length; i++){
-                    //rabit
+                    //rabbit
                     if(ocs[i].type == 2){
                         temp = "R";
                     }
@@ -129,10 +127,10 @@ function draw(){
         console.log(t + '\n');
         t='';
     }
-t2='\033[36m' +'Turn: ' + gameTurn + ' Rabits:' + Rabits.length + ':[ ';
-    //loop over each rabit health
-    for(var j = 0; j < Rabits.length; j++){
-        t2 = t2 + Rabits[j].lukyFeet + ' ';
+t2='\033[36m' +'Turn: ' + gameTurn + ' Rabbits:' + Rabbits.length + ':[ ';
+    //loop over each rabbit health
+    for(var j = 0; j < Rabbits.length; j++){
+        t2 = t2 + Rabbits[j].lukyFeet + ' ';
     }
     t2 = t2 + ']';
     console.log(t2 + '\n');
@@ -163,11 +161,11 @@ function reGrowGrass(){
     }
 }
 
-function moveRabits(){
+function moveRabbits(){
     var newRabs = 0;
-    for(var i = 0; i < Rabits.length; i++){
+    for(var i = 0; i < Rabbits.length; i++){
     
-        //Rabit moves 1 space in any valid direction. Outcomes: 1) if he has food he eats it and grass dies down 1 level. ELSE 2) Rabit looses a life.
+        //Rabbit moves 1 space in any valid direction. Outcomes: 1) if he has food he eats it and grass dies down 1 level. ELSE 2) Rabbit looses a life.
         newX = -1;
         newY = -1;
 
@@ -176,7 +174,7 @@ function moveRabits(){
                 temp = randWholeNum(2);
                 if (temp == 2) temp = -1;//quick flip because I'mm too lazy to fix random num genroator to include a neg option...
 
-                newX = temp + Rabits[i].x;
+                newX = temp + Rabbits[i].x;
 
             }while (newX > BoardWidth || newX < 1);
 
@@ -185,44 +183,44 @@ function moveRabits(){
             temp = randWholeNum(2);
             if (temp == 2) temp = -1;//quick flip because I'mm too lazy to fix random num genroator to include a neg option...
 
-            newY = temp + Rabits[i].y;
+            newY = temp + Rabbits[i].y;
 
             }while (newY > BoardHeight || newY < 1);
 
         //update obj to new location 
-        Rabits[i].x = newX;
-        Rabits[i].y = newY;
+        Rabbits[i].x = newX;
+        Rabbits[i].y = newY;
 
-        //Rabit must now eat or loose health
+        //Rabbit must now eat or loose health
         if(grassGrid[newX-1][newY-1].health > 0){//yum yum
                 grassGrid[newX-1][newY-1].health --;
 
         }else{ //Starving        
-                Rabits[i].lukyFeet --;
-                if(Rabits[i].lukyFeet <1){
-                    Rabits.splice(i,1);//if dead remove from array
+                Rabbits[i].lukyFeet --;
+                if(Rabbits[i].lukyFeet <1){
+                    Rabbits.splice(i,1);//if dead remove from array
                     i--; //adjust loop size
                 }
         }
 
-        //check for rabit love
-        if(CheckForRabitLove(newX-1,newY-1)){
-            newRabs = newRabs + Rabits[0].love();         
+        //check for rabbit love
+        if(CheckForRabbitLove(newX-1,newY-1)){
+            newRabs = newRabs + Rabbits[0].love();         
         }
 
 
     }
 
-    //After all moves done, then add in new Rabits
+    //After all moves done, then add in new Rabbits
 
-    if(Rabits.length + newRabs > MaxRabitPop)//since we are keeping it simple below in dumping out new kids, need a safty net...
-        newRabs = MaxRabitPop - Rabits.length;
+    if(Rabbits.length + newRabs > MaxRabbitPop)//since we are keeping it simple below in dumping out new kids, need a safty net...
+        newRabs = MaxRabbitPop - Rabbits.length;
 
         for(var j = 0; j < newRabs; j++){
-            Rabits.push(new RabitObj());
+            Rabbits.push(new RabbitObj());
             //keep it simple and just randomly dump the new children out on the board...
-            Rabits[Rabits.length-1].x = randWholeNum(BoardWidth);
-            Rabits[Rabits.length-1].y = randWholeNum(BoardHeight);
+            Rabbits[Rabbits.length-1].x = randWholeNum(BoardWidth);
+            Rabbits[Rabbits.length-1].y = randWholeNum(BoardHeight);
         }
 
 
@@ -239,13 +237,13 @@ for(var x = 0; x < BoardWidth; x++){
     }
 }
 
-//Init Rabits
-for(var i = 0; i < NumRabits; i++){
-    Rabits[i] = new RabitObj();
+//Init Rabbits
+for(var i = 0; i < NumRabbits; i++){
+    Rabbits[i] = new RabbitObj();
 
-   //Rabit starting loc
-    Rabits[i].x = randWholeNum(BoardWidth);
-    Rabits[i].y = randWholeNum(BoardHeight);
+   //Rabbit starting loc
+    Rabbits[i].x = randWholeNum(BoardWidth);
+    Rabbits[i].y = randWholeNum(BoardHeight);
 }
 
 
@@ -260,14 +258,14 @@ for(var x = 0; x < Sun.checkWeather(); x++){
     draw();
 }
 
-var jer = NumRabits;
-//Move the rabits around and see how long they can survive on the grass until they all run out of lives.
+var jer = NumRabbits;
+//Move the rabbits around and see how long they can survive on the grass until they all run out of lives.
 do{
     gameTurn ++;
-    moveRabits();
+    moveRabbits();
  
     if(gameTurn % 3 == 0)
         reGrowGrass();//every 3rd turn let grass try to regrow
 
     draw();
-}while (Rabits.length > 0);
+}while (Rabbits.length > 0);
